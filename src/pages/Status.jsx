@@ -100,10 +100,10 @@ function Status() {
     console.log("Resending email to " + cif + " for date " + startDate);
     try {
       const year = parseInt(startDate.substring(0, 4), 10);
-      const month = parseInt(startDate.substring(5, 7), 10) - 1; // Convert month to 0-indexed
-      const date = new Date(year, month - 1); // Subtract 1 month
+      const month = parseInt(startDate.substring(5, 7), 10) - 1;
+      const date = new Date(year, month - 1);
       const adjustedYear = date.getFullYear();
-      const adjustedMonth = (date.getMonth() + 1).toString().padStart(2, '0'); // Convert back to 1-indexed and pad with leading zero if necessary
+      const adjustedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
       const formattedDate = `${adjustedYear}-${adjustedMonth}`;
 
       const response = await axios.post(
