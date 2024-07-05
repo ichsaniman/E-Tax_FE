@@ -13,6 +13,7 @@ import {
   TableContainer,
   Divider,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { fetchDeliveryStatus } from "../apis/deliveryStatusApi";
 import { useCustomToast } from "../components/Toast";
 
@@ -21,6 +22,7 @@ function Status() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [deliveryStatus, setDeliveryStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { showSuccessToast, showErrorToast } = useCustomToast();
 
@@ -78,15 +80,61 @@ function Status() {
       const startDateParam = searchParams.get("start_date");
       const endDateParam = searchParams.get("end_date");
       const statusParam = searchParams.get("status");
+
+      const mappedStatus = {
+        Success: "Y",
+        Failed: "R",
+      };
+
       const result = await fetchDeliveryStatus(
         startDateParam,
         endDateParam,
-        statusParam
+        mappedStatus[statusParam]
       );
       setDeliveryList(result);
     };
     getDeliveryList();
   }, [searchParams]);
+
+  const resendEmail = async (cif, startDate) => {
+    console.log("Resending email to " + cif + " for date " + startDate);
+    try {
+      const year = parseInt(startDate.substring(0, 4), 10);
+      const month = parseInt(startDate.substring(5, 7), 10) - 1; // Convert month to 0-indexed
+      const date = new Date(year, month - 1); // Subtract 1 month
+      const adjustedYear = date.getFullYear();
+      const adjustedMonth = (date.getMonth() + 1).toString().padStart(2, '0'); // Convert back to 1-indexed and pad with leading zero if necessary
+      const formattedDate = `${adjustedYear}-${adjustedMonth}`;
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/sendEtax`,
+        {
+          cifs: [cif],
+          startDate: formattedDate,
+        }
+      );
+
+      if (response.data[cif] === "Email sent successfully") {
+        showSuccessToast("Email sent successfully!");
+      } else if (response.data[cif] === "Email already sent") {
+        showErrorToast("Email already sent!");
+      } else {
+        showErrorToast("Unknown response from server.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      showErrorToast("Failed to send email.");
+    }
+  };
+
+  const resendAllEmails = async () => {
+    setIsLoading(true);
+    const failedDeliveries = deliveryList.filter((delivery) => delivery.status === "R");
+    for (const delivery of failedDeliveries) {
+      await resendEmail(delivery.cif, delivery.tanggalpembuatan);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <div className="flex flex-col m-5">
@@ -135,7 +183,9 @@ function Status() {
             }}
           >
             {allStatuses.map((status) => (
-              <option value={status}>{status}</option>
+              <option key={status} value={status}>
+                {status}
+              </option>
             ))}
           </Select>
         </Box>
@@ -169,10 +219,13 @@ function Status() {
                   <Td>{delivery.tanggalpembuatan}</Td>
                   <Td>{delivery.status}</Td>
                   <Td>
-                    {delivery.status === "Success" ? (
-                      "Sended"
+                    {delivery.status === "Y" ? (
+                      ""
                     ) : (
-                      <button className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex">
+                      <button
+                        className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex"
+                        onClick={() => resendEmail(delivery.cif, delivery.tanggalpembuatan)}
+                      >
                         Resend
                       </button>
                     )}
@@ -183,8 +236,12 @@ function Status() {
           </Table>
         </TableContainer>
         <div className="flex p-2 gap-2">
-          <button className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center">
-            Resend All
+          <button
+            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            onClick={resendAllEmails}
+            disabled={isLoading}
+          >
+            {isLoading ? "Resending..." : "Resend All"}
           </button>
         </div>
       </div>

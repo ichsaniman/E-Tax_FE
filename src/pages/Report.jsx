@@ -48,6 +48,33 @@ function Report() {
     }
   };
 
+  const handleEmailTaxForm = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/sendEtax`,
+        {
+          cifs: [user.cif],
+          startDate: period
+        }
+      );
+      setIsLoading(false);
+  
+      if (response.data[user.cif] === "Email sent successfully") {
+        showSuccessToast("Email sent successfully!");
+      } else if (response.data[user.cif] === "Email already sent") {
+        showErrorToast("Email already sent!");
+      } else {
+        showErrorToast("Unknown response from server.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setIsLoading(false);
+      showErrorToast("Failed to send email.");
+    }
+  };
+  
+
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     setCif(searchText);
@@ -124,7 +151,10 @@ function Report() {
           >
             Download Tax Form
           </button>
-          <button className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center">
+          <button 
+            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            onClick={() => handleEmailTaxForm()}
+          >
             Email Tax Form & Report
           </button>
           <button className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center">
