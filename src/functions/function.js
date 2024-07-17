@@ -16,3 +16,5 @@ export function getMonthValue(monthName) {
   const month = months.find((m) => m.name === monthName);
   return month ? month.value : null;
 }
+
+export function addZeroInFront() {}

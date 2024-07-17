@@ -3,6 +3,7 @@ import { Box, Text } from "@chakra-ui/react";
 import axios from "axios";
 import CustomSpinner from "../components/Spinner";
 import { useCustomToast } from "../components/Toast";
+import { fetchNasabah } from "../apis/reportApi";
 
 function Report() {
   const [cif, setCif] = useState("");
@@ -11,21 +12,6 @@ function Report() {
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccessToast, showErrorToast } = useCustomToast();
-
-  const fetchNasabah = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/nasabah?cif=${cif}`
-      );
-      if (response.data[0]) {
-        return response.data[0];
-      } else {
-        return { message: "Tidak ada user" };
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleDownloadForm = async () => {
     try {
@@ -36,7 +22,26 @@ function Report() {
           responseType: "blob",
         }
       );
-      console.log(response);
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      setIsLoading(false);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      showErrorToast("PDF tidak ada");
+    }
+  };
+
+  const handleDownloadSummary = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/downloadSummaryPdf?cif=${user.cif}&startDate=${period}`,
+        {
+          responseType: "blob",
+        }
+      );
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setIsLoading(false);
@@ -55,14 +60,16 @@ function Report() {
         `${process.env.REACT_APP_API_BASE_URL}/sendEtax`,
         {
           cifs: [user.cif],
-          startDate: period
+          startDate: period,
         }
       );
       setIsLoading(false);
-  
+
       if (response.data[user.cif] === "Email sent successfully") {
         showSuccessToast("Email sent successfully!");
-      } else if (response.data[user.cif] === "Email already sent") {
+      } else if (
+        response.data[user.cif] === "No PDFs with status 'R' to send"
+      ) {
         showErrorToast("Email already sent!");
       } else {
         showErrorToast("Unknown response from server.");
@@ -73,7 +80,6 @@ function Report() {
       showErrorToast("Failed to send email.");
     }
   };
-  
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -84,10 +90,9 @@ function Report() {
     const getNasabah = async () => {
       if (cif) {
         setIsLoading(true);
-        const result = await fetchNasabah();
+        const result = await fetchNasabah(cif);
         setUser(result);
         setIsLoading(false);
-        console.log("nasi goreng", period);
       }
     };
 
@@ -128,13 +133,13 @@ function Report() {
             />
           </div>
         </Box>
-        <button className="flex self-end h-1/6 border rounded py-1 px-2 bg-yellow-600 hover:bg-yellow-700 font-semibold text-white">
+        <button className="flex self-end h-1/6 border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
           Search
         </button>
       </form>
 
       <div className="border rounded-md">
-        <h1 className="bg-yellow-600 border rounded-t-md p-2 text-white font-semibold">
+        <h1 className="bg-[#238FBA] border rounded-t-md p-2 text-white font-semibold">
           Detail
         </h1>
         <div className="p-2">
@@ -151,13 +156,16 @@ function Report() {
           >
             Download Tax Form
           </button>
-          <button 
+          <button
             className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
             onClick={() => handleEmailTaxForm()}
           >
             Email Tax Form & Report
           </button>
-          <button className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center">
+          <button
+            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            onClick={() => handleDownloadSummary()}
+          >
             Download Summary & Detail
           </button>
         </div>

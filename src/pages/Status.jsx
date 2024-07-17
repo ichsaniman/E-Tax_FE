@@ -103,7 +103,7 @@ function Status() {
       const month = parseInt(startDate.substring(5, 7), 10) - 1;
       const date = new Date(year, month - 1);
       const adjustedYear = date.getFullYear();
-      const adjustedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+      const adjustedMonth = (date.getMonth() + 1).toString().padStart(2, "0");
       const formattedDate = `${adjustedYear}-${adjustedMonth}`;
 
       const response = await axios.post(
@@ -129,7 +129,9 @@ function Status() {
 
   const resendAllEmails = async () => {
     setIsLoading(true);
-    const failedDeliveries = deliveryList.filter((delivery) => delivery.status === "R");
+    const failedDeliveries = deliveryList.filter(
+      (delivery) => delivery.status === "R"
+    );
     for (const delivery of failedDeliveries) {
       await resendEmail(delivery.cif, delivery.tanggalpembuatan);
     }
@@ -138,7 +140,7 @@ function Status() {
 
   return (
     <div className="flex flex-col m-5">
-      <h className="text-3xl mb-4">Status Delivery</h>
+      <h className="text-3xl mb-4 font-bold">Status Delivery</h>
       <Divider />
       <form
         className="flex my-2 space-x-2 items-center"
@@ -189,15 +191,23 @@ function Status() {
             ))}
           </Select>
         </Box>
-        <button className="flex self-end border rounded py-2 px-2 bg-yellow-600 hover:bg-yellow-700 font-semibold text-white">
+        <button className="flex self-end border rounded py-2 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
           Search
         </button>
       </form>
 
       <div className="border rounded-md mb-4">
-        <h1 className="bg-yellow-600 border rounded-t-md p-2 text-white font-semibold">
-          Status Delivery
-        </h1>
+        <div className="flex flex-row bg-[#238FBA] border rounded-t-md p-2 text-white font-semibold justify-between">
+          <h1 className="text-xl">Status Delivery</h1>
+          <button
+            className="px-2 py-1 rounded bg-[#263043] font-semibold text-white "
+            onClick={resendAllEmails}
+            disabled={isLoading}
+          >
+            {isLoading ? "Resending..." : "Resend All"}
+          </button>
+        </div>
+
         <TableContainer>
           <Table size="sm">
             <Thead>
@@ -220,11 +230,13 @@ function Status() {
                   <Td>{delivery.status}</Td>
                   <Td>
                     {delivery.status === "Y" ? (
-                      ""
+                      "Sended"
                     ) : (
                       <button
                         className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex"
-                        onClick={() => resendEmail(delivery.cif, delivery.tanggalpembuatan)}
+                        onClick={() =>
+                          resendEmail(delivery.cif, delivery.tanggalpembuatan)
+                        }
                       >
                         Resend
                       </button>
@@ -235,15 +247,6 @@ function Status() {
             </Tbody>
           </Table>
         </TableContainer>
-        <div className="flex p-2 gap-2">
-          <button
-            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
-            onClick={resendAllEmails}
-            disabled={isLoading}
-          >
-            {isLoading ? "Resending..." : "Resend All"}
-          </button>
-        </div>
       </div>
     </div>
   );
