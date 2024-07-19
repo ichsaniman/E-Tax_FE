@@ -11,7 +11,7 @@ const SidebarLayout = ({ children }) => {
   return (
     <div className="flex flex-row">
       {showSidebar && (
-        <Sidebar menuItems={["Home", "Report", "Status", "Scheduler"]} />
+        <Sidebar menuItems={["Home", "Laporan", "Status", "Jadwal"]} />
       )}
       <main>{children}</main>
     </div>
