@@ -64,11 +64,11 @@ function Scheduler() {
   return (
     <div className="flex flex-col m-6">
       {isLoading && <CustomSpinner />}
-      <h className="text-3xl mb-6 font-bold">Scheduler</h>
+      <h className="text-3xl mb-6 font-bold">Jadwal</h>
       <div className="flex flex-col bg-[#263043] p-10 rounded-xl">
         <div className="flex flex-row space-x-10 mb-8">
           <div className="flex flex-col bg-white rounded-lg shadow-md p-4">
-            <h2 className="text-2xl mb-6 px-10 font-medium">Generate</h2>
+            <h2 className="text-2xl mb-6 px-10 font-medium">Pembuatan</h2>
             <Text className="font-semibold text-lg">Tanggal</Text>
             <div className="">
               <input
@@ -93,7 +93,7 @@ function Scheduler() {
           </div>
 
           <div className="flex flex-col bg-white rounded-lg shadow-md p-4">
-            <h2 className="text-2xl mb-6 px-16 font-medium">Send</h2>
+            <h2 className="text-2xl mb-6 px-10 font-medium">Pengiriman</h2>
             <Text className="font-semibold text-lg">Tanggal</Text>
             <div className="">
               <input
@@ -122,7 +122,7 @@ function Scheduler() {
             className="bg-white border rounded p-2 text-[#263043] font-semibold inline-flex"
             onClick={(e) => handleChangeSchedule(e)}
           >
-            Confirm
+            Konfirmasi
           </button>
         </div>
       </div>

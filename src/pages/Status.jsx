@@ -140,7 +140,7 @@ function Status() {
 
   return (
     <div className="flex flex-col m-5">
-      <h className="text-3xl mb-4 font-bold">Status Delivery</h>
+      <h className="text-3xl mb-4 font-bold">Status Pengiriman</h>
       <Divider />
       <form
         className="flex my-2 space-x-2 items-center"
@@ -148,7 +148,7 @@ function Status() {
       >
         <Box className="flex flex-col">
           <label className="font-semibold text-lg" htmlFor="start-date">
-            Start Date
+            Tanggal Awal
           </label>
           <input
             className="border rounded p-1"
@@ -162,7 +162,7 @@ function Status() {
 
         <Box className="flex flex-col">
           <label className="font-semibold text-lg" htmlFor="end-date">
-            End Date
+            Tanggal Akhir
           </label>
           <input
             className="border rounded p-1"
@@ -192,19 +192,19 @@ function Status() {
           </Select>
         </Box>
         <button className="flex self-end border rounded py-2 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
-          Search
+          Cari
         </button>
       </form>
 
       <div className="border rounded-md mb-4">
         <div className="flex flex-row bg-[#238FBA] border rounded-t-md p-2 text-white font-semibold justify-between">
-          <h1 className="text-xl">Status Delivery</h1>
+          <h1 className="text-xl">Status Pengiriman</h1>
           <button
             className="px-2 py-1 rounded bg-[#263043] font-semibold text-white "
             onClick={resendAllEmails}
             disabled={isLoading}
           >
-            {isLoading ? "Resending..." : "Resend All"}
+            {isLoading ? "Resending..." : "Kirim Ulang Semua"}
           </button>
         </div>
 
@@ -215,7 +215,7 @@ function Status() {
                 <Th>No.</Th>
                 <Th>CIF</Th>
                 <Th>Email</Th>
-                <Th>Date Time</Th>
+                <Th>Tanggal</Th>
                 <Th>Status</Th>
                 <Th>Action</Th>
               </Tr>
@@ -230,7 +230,7 @@ function Status() {
                   <Td>{delivery.status}</Td>
                   <Td>
                     {delivery.status === "Y" ? (
-                      "Sended"
+                      "Terkirim"
                     ) : (
                       <button
                         className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex"
@@ -238,7 +238,7 @@ function Status() {
                           resendEmail(delivery.cif, delivery.tanggalpembuatan)
                         }
                       >
-                        Resend
+                        Kirim Ulang
                       </button>
                     )}
                   </Td>

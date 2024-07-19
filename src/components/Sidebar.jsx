@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Sidebar({ setSelectedComponent, menuItems }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="bg-[#263043] text-white font-semibold min-h-screen p-4 mr-5 flex flex-col justify-between w-60">
+    <div className="bg-[#263043] text-white font-semibold min-h-screen p-4 mr-5 flex flex-col justify-between w-44">
       <div className="lg:hidden">
         <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2">
           ☰

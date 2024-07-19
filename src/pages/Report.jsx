@@ -8,10 +8,29 @@ import { fetchNasabah } from "../apis/reportApi";
 function Report() {
   const [cif, setCif] = useState("");
   const [user, setUser] = useState("");
+  const [npwp, setNpwp] = useState("");
+  const [nama, setNama] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [kota, setKota] = useState("");
+  const [banknpwp, setBanknpwp] = useState("");
+  const [namabank, setNamabank] = useState("");
+  const [email, setEmail] = useState("");
+  const [namaofficetax, setNamaofficetax] = useState("");
   const [period, setPeriod] = useState("");
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccessToast, showErrorToast } = useCustomToast();
+
+  const user_info = [
+    "NPWP",
+    "Customer Name",
+    "City",
+    "Address",
+    "Office Tax Name",
+    "Bank NPWP",
+    "Bank Officer Name",
+    "Email",
+  ];
 
   const handleDownloadForm = async () => {
     try {
@@ -91,6 +110,24 @@ function Report() {
       if (cif) {
         setIsLoading(true);
         const result = await fetchNasabah(cif);
+        const {
+          npwp,
+          nama,
+          alamat,
+          kota,
+          banknpwp,
+          namabank,
+          email,
+          namaofficetax,
+        } = result;
+        setNpwp(npwp);
+        setNama(nama);
+        setAlamat(alamat);
+        setKota(kota);
+        setBanknpwp(banknpwp);
+        setNamabank(namabank);
+        setEmail(email);
+        setNamaofficetax(namaofficetax);
         setUser(result);
         setIsLoading(false);
       }
@@ -102,7 +139,7 @@ function Report() {
   return (
     <div className="flex flex-col m-6">
       {isLoading && <CustomSpinner />}
-      <h className="text-3xl mb-6">Report</h>
+      <h className="text-3xl mb-6 font-bold">Laporan</h>
       <form
         className="flex flex-row mb-4 space-x-3"
         onSubmit={handleSearchSubmit}
@@ -110,7 +147,7 @@ function Report() {
         <Box>
           <div className="flex flex-col">
             <label className="font-semibold text-lg" htmlFor="period">
-              Period
+              Bulan
             </label>
             <input
               className="border rounded p-1"
@@ -129,12 +166,12 @@ function Report() {
               type="text"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Enter CIF"
+              placeholder="Masukkan CIF"
             />
           </div>
         </Box>
         <button className="flex self-end h-1/6 border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
-          Search
+          Cari
         </button>
       </form>
 
@@ -142,31 +179,98 @@ function Report() {
         <h1 className="bg-[#238FBA] border rounded-t-md p-2 text-white font-semibold">
           Detail
         </h1>
-        <div className="p-2">
-          {Object.entries(user).map(([key, value]) => (
-            <div key={key}>
-              <strong>{key}:</strong> {value}
-            </div>
-          ))}
+        <div className="grid grid-cols-3 grid-rows-4 p-2 gap-4 text-sm">
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">NPWP</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={npwp}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">Nama Kantor Pajak</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={namaofficetax}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">Email</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={email}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">Nama Nasabah</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={nama}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2 col-span-2">
+            <p className="bg-[#238FBA] text-white p-1">NPWP Bank</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={banknpwp}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">Kota</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={kota}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2 col-span-2">
+            <p className="bg-[#238FBA] text-white p-1">Nama Bank</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={namabank}
+              disabled
+            />
+          </div>
+          <div className="flex flex-row space-x-2">
+            <p className="bg-[#238FBA] text-white p-1">Alamat</p>
+            <input
+              className="border rounded"
+              type="text"
+              value={alamat}
+              disabled
+            />
+          </div>
         </div>
         <div className="flex p-2 gap-2">
           <button
-            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            className="px-2 py-1 rounded bg-[#263043] font-semibold text-white flex items-center justify-center"
             onClick={() => handleDownloadForm()}
           >
-            Download Tax Form
+            Download Surat Pajak
           </button>
           <button
-            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            className="px-2 py-1 rounded bg-[#263043] font-semibold text-white flex items-center justify-center"
             onClick={() => handleEmailTaxForm()}
           >
-            Email Tax Form & Report
+            Email Surat Pajak & Laporan
           </button>
           <button
-            className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex items-center justify-center"
+            className="px-2 py-1 rounded bg-[#263043] font-semibold text-white flex items-center justify-center"
             onClick={() => handleDownloadSummary()}
           >
-            Download Summary & Detail
+            Download Ringkasan
           </button>
         </div>
       </div>

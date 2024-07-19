@@ -21,7 +21,7 @@ function App() {
           }
         />
         <Route
-          path="/report"
+          path="/laporan"
           element={
             <SidebarLayout>
               <Report />
@@ -37,7 +37,7 @@ function App() {
           }
         />
         <Route
-          path="/scheduler"
+          path="/jadwal"
           element={
             <SidebarLayout>
               <Scheduler />
