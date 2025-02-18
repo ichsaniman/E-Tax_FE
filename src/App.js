@@ -1,51 +1,67 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Report from "./pages/Report";
-import SidebarLayout from "./layouts/SidebarLayout";
+// import SidebarLayout from "./layouts/SidebarLayout";
 import Status from "./pages/Status";
 import Scheduler from "./pages/Scheduler";
+import Header from "./components/header";
+import Sidebar from "./components/sidebar";
 
 function App() {
+  const routes = [
+    { path: "/home", component: Home, access: "/" },
+    { path: "/laporan", component: Report, access: "/" },
+    { path: "/status", component: Status, access: "/" },
+    { path: "/jadwal", component: Scheduler, access: "/" },
+  ];
+  const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+
+  const OpenSidebar = () => {
+    setOpenSidebarToggle(!openSidebarToggle);
+  };
+
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="/home"
-          element={
-            <SidebarLayout>
-              <Home />
-            </SidebarLayout>
-          }
-        />
-        <Route
-          path="/laporan"
-          element={
-            <SidebarLayout>
-              <Report />
-            </SidebarLayout>
-          }
-        />
-        <Route
-          path="/status"
-          element={
-            <SidebarLayout>
-              <Status />
-            </SidebarLayout>
-          }
-        />
-        <Route
-          path="/jadwal"
-          element={
-            <SidebarLayout>
-              <Scheduler />
-            </SidebarLayout>
-          }
-        />
-      </Routes>
-    </div>
+    <ChakraProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <div className="grid-container">
+                  {/* Header */}
+                  <Header OpenSidebar={OpenSidebar} />
+
+                  {/* Sidebar */}
+                  <Sidebar
+                    openSidebarToggle={openSidebarToggle}
+                    OpenSidebar={OpenSidebar}
+                    // accessData={accessPermissions}
+                  />
+
+                  <route.component />
+
+                  {/* Protected Route Component */}
+                  {/* <Protected
+                  access={route.access}
+                  Page={() => (
+                    <Suspense fallback={<LoadingOverlay />}>
+                      <route.component />
+                    </Suspense>
+                  )}
+                /> */}
+                </div>
+              }
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </ChakraProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
+import Header from "../components/header";
 
 const SidebarLayout = ({ children }) => {
   const location = useLocation();
@@ -11,7 +12,9 @@ const SidebarLayout = ({ children }) => {
   return (
     <div className="flex flex-row">
       {showSidebar && (
-        <Sidebar menuItems={["Home", "Laporan", "Status", "Jadwal"]} />
+        <>
+          <Sidebar menuItems={["Home", "Laporan", "Status", "Jadwal"]} />
+        </>
       )}
       <main>{children}</main>
     </div>

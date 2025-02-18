@@ -170,7 +170,7 @@ function Report() {
             />
           </div>
         </Box>
-        <button className="flex self-end h-1/6 border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
+        <button className="flex self-end  border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
           Cari
         </button>
       </form>

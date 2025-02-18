@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Flex } from "@chakra-ui/react";
 
 function Home() {
   return (
-    <div className="m-6 flex flex-col space-y-6">
-      <h className="text-3xl font-bold">E-Tax</h>
-      <p className="w-1/2 text-justify">
+    // <Flex direction="column" gap="4" className="main-container">
+    <div className="m-6 flex flex-col">
+      <h className="text-3xl font-bold mb-6">E-Tax</h>
+      <p className="w-1/2 text-justify mb-6">
         Aplikasi kami mengotomatisasi proses pembuatan dan pengiriman lembar
         pajak melalui email, memudahkan pengelolaan pajak bagi individu dan
         perusahaan. Dengan mengumpulkan data, menghitung pajak sesuai peraturan,
@@ -19,6 +21,7 @@ function Home() {
         pajak Anda.
       </p>
     </div>
+    // </Flex>
   );
 }
 
