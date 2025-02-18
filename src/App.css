@@ -1,38 +1,485 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+/* In index.css or App.css */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F0F1F2;
+  color: #9e9ea4;
+  font-family: 'Poppins', sans-serif;
+}
+
+.icon {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 14px;
+}
+
+.icon_header {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 26px;
+}
+
+.icon, .icon_header {
+  margin-right: 5px;
+}
+
+.close_icon {
+  color: red;
+  margin-left: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    'header header '
+    /* 'sidebar alert ' */
+    'sidebar main '
+    'sidebar footer';
+  height: 100vh;
+}
+
+.footer {
+  bottom: 0;
+  padding: 10px 0;
+  width: 100%;
+  background-color: #000000;
   text-align: center;
+  z-index: 10;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.footer h4 {
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Header  */
+.header {
+  grid-area: header;
+  z-index: 11;
+  /* padding: 0 30px 0 30px; */
+  /* box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35); */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.menu-icon {
+  display: none;
+}
+/* End Header  */
+
+/* Sidebar  */
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  background-color: #263043;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  -webkit-transition: all 0.5s;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-center;
+  align-items: center;
+  padding: 15px 15px 0px 20px;
+  margin: 15px 0 30px 0;
+  color: #ffffff;
+}
+
+.sidebar-title > span {
+  display: none;
+  cursor: pointer;
+}
+
+.sidebar-brand {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sidebar-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.sidebar-list-item:not(.has-submenu):hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.sidebar-list-item.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.sidebar-list-item > a {
+  text-decoration: none;
+  color: #9e9ea4;
+}
+
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  width: 100%;
+  z-index: 12 !important;
+}
+
+.has-submenu {
+  cursor: pointer;
+}
+
+.has-submenu:hover {
+  background-color: transparent;
+}
+
+.has-submenu .sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/* Main  */  
+.main-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 2em;
+  background-color: #f9f9f9;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.main-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
+  padding: 15px 5px;
+  border-radius: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.card-inner > .card_icon {
+  font-size: 25px;
 }
 
-@keyframes App-logo-spin {
+.loading-placeholder {
+  animation: shine 1.5s infinite;
+  background: linear-gradient(90deg, rgba(224, 224, 224, 0.4), rgba(240, 240, 240, 0.4), rgba(224, 224, 224, 0.4));
+  background-size: 200% 100%;
+  color: transparent;
+  display: inline-block;
+  padding: 0.5em;
+  border-radius: 8px;
+}
+
+.apexcharts-legend {
+  padding: 10px; /* Add padding to create space between the legend items and the border */
+  border-radius: 5px; /* Add border radius for rounded corners */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animation {
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes twinkling {
+  0% {
+    background-color: #DD5746;
+  }
+  50% {
+    background-color: #9BCF53;
+  }
+  100% {
+    background-color: #5BBCFF;
+  }
+}
+
+/* Linechart.css */
+.chart-container .canvasjs-chart-container .canvasjs-chart-axis-x text {
+  font-weight: bold; /* Apply bold font weight to x-axis text */
+}
+
+
+.chart-container {
+  opacity: 0;
+  transition: opacity 60s ease-in-out;
+}
+
+.chart-container.show {
+  opacity: 50;
+}
+
+.transition-height {
+  transition: height 0.8s ease-in-out;
+  overflow: hidden;
+}
+
+
+.twinkling-bg {
+  animation: twinkling 4s infinite; /* Adjust the duration as needed */
+}
+
+/* Keyframes for the twinkling effect */
+@keyframes twinkling {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+.twinkling-bg {
+  animation: twinkling 1s infinite; /* Adjust the duration as needed */
+}
+
+@keyframes twinkling {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Optional: Define .neon-text if you want additional effects */
+.neon-text {
+  color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
+}
+
+@keyframes neon-animation {
   from {
-    transform: rotate(0deg);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
   }
   to {
-    transform: rotate(360deg);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.8);
   }
+}
+
+
+@keyframes shine {
+  to {
+    background-position: 200% 100%;
+  }
+}
+
+.canvasjs-chart-credit {
+  color: #fff;
+  font-size: 0px;
+  position: none;
+  display: none !important;
+}
+
+.apexcharts-legend {
+  display: none;
+}
+
+.apexcharts-tooltip {
+  color: #000;
+}
+
+.apexcharts-toolbar {
+  display:none;
+  height: 50px;
+  color: #000;
+}
+
+
+/* End Main  */
+
+/* Modal Pop Up*/
+
+/* Medium <= 992px */
+  
+@media screen and (max-width: 992px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 3fr;
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  #sidebar {
+    display: none;
+  }
+
+  .menu-icon {
+    display: inline;
+  }
+
+  .sidebar-title > span {
+    display: inline;
+  }
+}
+/* Small <= 768px */
+  
+@media screen and (max-width: 768px) {
+  .main-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+}
+
+/* Extra Small <= 576px */
+
+@media screen and (max-width: 576px) {
+ 
+}
+
+.chat-container {
+  height: 45vh;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  justify-content: center;
+  background-color: #f9f9f9;
+}
+
+.chat {
+  padding: 10px;
+}
+
+.chat-input {
+  border: 1px solid #ccc;
+}
+
+.chat-input:focus {
+  border: 1px solid #238FBA;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  max-width: 70%;
+  color: #333;
+}
+
+.received {
+  background-color: #f2f2f2;
+  justify-content: flex-start;
+  border-radius: 0 20px 20px 20px;
+  margin-bottom:0;
+}
+
+.sent {
+  background-color: #238FBA;
+  color: white;
+  justify-content: flex-end;
+  border-radius: 20px 0 20px 20px;
+  margin-bottom:0;
+}
+
+.swal-popup {
+  z-index: 1500 !important;
+}
+
+.table>:not(caption)>*>* {
+  padding: .5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.swal2-container {
+  z-index: 1500 !important;
+}
+
+/* .chakra-tabs__tab {
+  color: black;
+}
+.chakra-tabs__tab[aria-selected="true"] {
+  color: white;
+  background: black;
+} */
+
+.chakra-drawer__body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: 
+}
+/* .chakra-tabs__tab {
+  color: black;
+} */
+/* .chakra-tabs__tab[aria-selected="true"] {
+  color: white;
+  background: #27A0CF;
+} */
+
+
+/* shimmer.css */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-gold {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0.8) 20%,
+    rgba(255, 215, 0, 0.6) 50%,
+    rgba(255, 215, 0, 0.8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 5s infinite;
+}
+
+.shimmer-silver {
+  background: linear-gradient(
+    90deg,
+    rgba(247, 247, 247, 0.8) 25%,
+    rgba(247, 247, 247, 0.6) 50%,
+    rgba(247, 247, 247, 0.8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+.slick-slider .slick-initialized {
+  color: black;
+  z-index: 150 !important;
+  opacity: 1;
+}
+
+.slick-arrow {
+  color: black;
+  z-index: 150 !important;
+}
+
+.slick-arrow .slick-next {
+  z-index: 150 !important;
 }
