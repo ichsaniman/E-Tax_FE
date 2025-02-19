@@ -47,16 +47,6 @@ function Status() {
     setSearchParams(new URLSearchParams(searchParams.toString()));
   };
 
-  const handleSetEndDate = () => {
-    if (endDate) {
-      searchParams.set("end_date", endDate);
-    } else {
-      searchParams.delete("end_date");
-    }
-
-    setSearchParams(new URLSearchParams(searchParams.toString()));
-  };
-
   const handleSetStatus = () => {
     if (deliveryStatus) {
       searchParams.set("status", deliveryStatus);
@@ -141,7 +131,6 @@ function Status() {
   return (
     <div className="flex flex-col m-5">
       <h className="text-3xl mb-4 font-bold">Status Pengiriman</h>
-      <Divider />
       <form
         className="flex my-2 space-x-2 items-center"
         onSubmit={handleSearchSubmit}
@@ -227,10 +216,13 @@ function Status() {
                   <Td>{delivery.cif}</Td>
                   <Td>{delivery.email}</Td>
                   <Td>{delivery.tanggalpembuatan}</Td>
-                  <Td>{delivery.status}</Td>
+                  <Td>{delivery.status === "Y" ? (
+                    <p className="text-green-600">Success</p>
+                  ) : (<p className="text-red-600">Failed</p>)
+                  }</Td>
                   <Td>
                     {delivery.status === "Y" ? (
-                      "Terkirim"
+                      <p className="text-green-600">Terkirim</p>
                     ) : (
                       <button
                         className="px-2 py-1 rounded bg-orange-500 hover:bg-orange-600 font-semibold text-white flex"

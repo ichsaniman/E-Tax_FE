@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import {
   changeSchedulerGenerate,
   changeSchedulerSend,
@@ -9,7 +9,6 @@ import CustomSpinner from "../components/Spinner";
 import { useCustomToast } from "../components/Toast";
 
 function Scheduler() {
-  const [currentSchedule, setCurrentSchedule] = useState("");
   const [tanggalGenerate, setTanggalGenerate] = useState("");
   const [jamGenerate, setJamGenerate] = useState("");
   const [tanggalSend, setTanggalSend] = useState("");
