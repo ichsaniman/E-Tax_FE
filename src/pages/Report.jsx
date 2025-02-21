@@ -1,11 +1,13 @@
 import { React, useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
+import Select from "react-select";
 import axios from "axios";
 import CustomSpinner from "../components/Spinner";
 import { useCustomToast } from "../components/Toast";
-import { fetchNasabah } from "../apis/reportApi";
+import { fetchAllNasabah, fetchNasabah } from "../apis/reportApi";
 
 function Report() {
+  const [users, setUsers] = useState([]);
   const [cif, setCif] = useState("");
   const [user, setUser] = useState("");
   const [npwp, setNpwp] = useState("");
@@ -21,16 +23,10 @@ function Report() {
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccessToast, showErrorToast } = useCustomToast();
 
-  const user_info = [
-    "NPWP",
-    "Customer Name",
-    "City",
-    "Address",
-    "Office Tax Name",
-    "Bank NPWP",
-    "Bank Officer Name",
-    "Email",
-  ];
+  const handleSelectCif = (selectedOption) => {
+    const selectedClientId = selectedOption ? selectedOption.value : "";
+    setSearchText(selectedClientId);
+  };
 
   const handleDownloadForm = async () => {
     try {
@@ -106,6 +102,19 @@ function Report() {
   };
 
   useEffect(() => {
+    const getAllNasabah = async () => {
+      const result = await fetchAllNasabah();
+      const cifs = result.map((user) => ({
+        value: user.cif,
+        label: user.cif,
+      }));
+      console.log(cifs);
+      setUsers(cifs);
+    };
+    getAllNasabah();
+  }, []);
+
+  useEffect(() => {
     const getNasabah = async () => {
       if (cif) {
         setIsLoading(true);
@@ -144,13 +153,13 @@ function Report() {
         className="flex flex-row mb-4 space-x-3"
         onSubmit={handleSearchSubmit}
       >
-        <Box>
+        <Box className="flex gap-4 items-center justify-center">
           <div className="flex flex-col">
             <label className="font-semibold text-lg" htmlFor="period">
               Bulan
             </label>
             <input
-              className="border rounded p-1"
+              className="border rounded focus:border-pink-500 focus:outline-none p-1"
               type="month"
               id="period"
               name="period"
@@ -159,15 +168,17 @@ function Report() {
             />
           </div>
 
-          <Text className="font-semibold text-lg">CIF</Text>
-          <div className="">
-            <input
-              className="border rounded px-4 focus:border-pink-500 focus:outline-none p-1"
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Masukkan CIF"
-            />
+          <div className="flex flex-col">
+            <Text className="font-semibold text-lg">CIF</Text>
+            <div className="">
+              <Select
+                onChange={(selectedOption) => handleSelectCif(selectedOption)}
+                placeholder="Masukkan CIF"
+                isSearchable={true}
+                options={users}
+                isClearable
+              />
+            </div>
           </div>
         </Box>
         <button className="flex self-end  border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
@@ -176,12 +187,12 @@ function Report() {
       </form>
 
       <div className="border rounded-md">
-        <h1 className="bg-[#238FBA] border rounded-t-md p-2 text-white font-semibold">
+        <h1 className="bg-[#238FBA]  border rounded-t-md p-2 text-white font-semibold">
           Detail
         </h1>
-        <div className="grid grid-cols-3 grid-rows-4 p-2 gap-4 text-sm">
+        <div className="grid grid-cols-3 p-2 gap-3 text-sm mb-4">
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">NPWP</p>
+            <p className="font-semibold p-1">NPWP</p>
             <input
               className="border rounded"
               type="text"
@@ -190,7 +201,7 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">Nama Kantor Pajak</p>
+            <p className="font-semibold p-1">Nama Kantor Pajak</p>
             <input
               className="border rounded"
               type="text"
@@ -199,16 +210,16 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">Email</p>
+            <p className="font-semibold p-1">Email</p>
             <input
-              className="border rounded"
+              className="border rounded w-52"
               type="text"
               value={email}
               disabled
             />
           </div>
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">Nama Nasabah</p>
+            <p className="font-semibold p-1">Nama Nasabah</p>
             <input
               className="border rounded"
               type="text"
@@ -217,7 +228,7 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2 col-span-2">
-            <p className="bg-[#238FBA] text-white p-1">NPWP Bank</p>
+            <p className="font-semibold p-1">NPWP Bank</p>
             <input
               className="border rounded"
               type="text"
@@ -226,7 +237,7 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">Kota</p>
+            <p className="font-semibold p-1">Kota</p>
             <input
               className="border rounded"
               type="text"
@@ -235,7 +246,7 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2 col-span-2">
-            <p className="bg-[#238FBA] text-white p-1">Nama Bank</p>
+            <p className="font-semibold p-1">Nama Bank</p>
             <input
               className="border rounded"
               type="text"
@@ -244,7 +255,7 @@ function Report() {
             />
           </div>
           <div className="flex flex-row space-x-2">
-            <p className="bg-[#238FBA] text-white p-1">Alamat</p>
+            <p className="font-semibold p-1">Alamat</p>
             <input
               className="border rounded"
               type="text"

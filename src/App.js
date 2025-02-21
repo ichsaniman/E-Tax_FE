@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Report from "./pages/Report";
-// import SidebarLayout from "./layouts/SidebarLayout";
 import Status from "./pages/Status";
 import Scheduler from "./pages/Scheduler";
 import Header from "./components/header";
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/Sidebar";
+import Log from "./pages/Log";
 
 function App() {
   const routes = [
@@ -16,6 +16,7 @@ function App() {
     { path: "/laporan", component: Report, access: "/" },
     { path: "/status", component: Status, access: "/" },
     { path: "/jadwal", component: Scheduler, access: "/" },
+    { path: "/log", component: Log, access: "/" },
   ];
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
