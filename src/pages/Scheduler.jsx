@@ -1,5 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Text } from "@chakra-ui/react";
+import React, { useEffect, useState, Suspense } from "react";
+import {
+  Text,
+  Input,
+  Flex,
+  Button,
+  Box,
+  Stack,
+  Tab,
+  Tabs,
+  TabPanel,
+  TabPanels,
+  TabList,
+  Spinner,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import {
   changeSchedulerGenerate,
   changeSchedulerSend,
@@ -13,7 +28,7 @@ function Scheduler() {
   const [jamGenerate, setJamGenerate] = useState("");
   const [tanggalSend, setTanggalSend] = useState("");
   const [jamSend, setJamSend] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { showSuccessToast, showErrorToast } = useCustomToast();
 
   const handleChangeSchedule = async () => {
@@ -56,75 +71,130 @@ function Scheduler() {
       setJamGenerate(hourGenerate + ":" + minuteGenerate);
       setTanggalSend(jadwalSend[2]);
       setJamSend(hourSend + ":" + minuteSend);
+      setIsLoading(false);
     };
     getScheduler();
   }, []);
 
   return (
-    <div className="flex flex-col m-6">
+    <div className="flex flex-col m-6 w">
       {isLoading && <CustomSpinner />}
-      <h className="text-3xl mb-6 font-bold">Jadwal</h>
-      <div className="flex flex-col bg-[#263043] p-10 rounded-xl">
-        <div className="flex flex-row space-x-10 mb-8">
-          <div className="flex flex-col bg-white rounded-lg shadow-md p-4">
-            <h2 className="text-2xl mb-6 px-10 font-medium">Pembuatan</h2>
-            <Text className="font-semibold text-lg">Tanggal</Text>
-            <div className="">
-              <input
-                className="flex border rounded p-1 w-1/2"
-                type="text"
-                id="period"
-                name="period"
-                value={tanggalGenerate}
-                onChange={(e) => setTanggalGenerate(e.target.value)}
-              />
-            </div>
-
-            <Text className="font-semibold text-lg">Jam</Text>
-            <div className="">
-              <input
-                className="border rounded px-4 focus:border-pink-500 focus:outline-none p-1"
-                type="time"
-                value={jamGenerate}
-                onChange={(e) => setJamGenerate(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col bg-white rounded-lg shadow-md p-4">
-            <h2 className="text-2xl mb-6 px-10 font-medium">Pengiriman</h2>
-            <Text className="font-semibold text-lg">Tanggal</Text>
-            <div className="">
-              <input
-                className="flex border rounded p-1 w-1/2"
-                type="text"
-                id="period"
-                name="period"
-                value={tanggalSend}
-                onChange={(e) => setTanggalSend(e.target.value)}
-              />
-            </div>
-
-            <Text className="font-semibold text-lg">Jam</Text>
-            <div className="">
-              <input
-                className="border rounded px-4 focus:border-pink-500 focus:outline-none p-1"
-                type="time"
-                value={jamSend}
-                onChange={(e) => setJamSend(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <button
-            className="bg-white border rounded p-2 text-[#263043] font-semibold inline-flex"
-            onClick={(e) => handleChangeSchedule(e)}
+      <Text className="text-3xl mb-6 font-bold">Jadwal</Text>
+      <Box width={"80"} bg={"white"} borderRadius={"lg"} boxShadow={"lg"} p={4}>
+        <Tabs variant="soft-rounded" colorScheme="blue">
+          <TabList
+            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+            gap={3}
+            my={3}
           >
-            Konfirmasi
-          </button>
-        </div>
-      </div>
+            <Tab color={"#6F777A"} _focus={{ color: "white", bg: "#27A0CF" }}>
+              Generate
+            </Tab>
+            <Tab color={"#6F777A"} _focus={{ color: "white", bg: "#27A0CF" }}>
+              Send
+            </Tab>
+          </TabList>
+
+          <TabPanels m={0} p={0}>
+            <TabPanel p={0}>
+              <Suspense fallback={<Spinner size="xl" />}>
+                <Box
+                  color={"black"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={"5em"}
+                >
+                  <Stack>
+                    <FormControl>
+                      <FormLabel>Tanggal</FormLabel>
+                      <Input
+                        className="flex border rounded p-1 w-1/2"
+                        type="text"
+                        id="period"
+                        name="period"
+                        value={tanggalSend}
+                        onChange={(e) => setTanggalSend(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Jam</FormLabel>
+                      <Input
+                        className="border rounded px-4 focus:border-pink-500 focus:outline-none p-1"
+                        type="time"
+                        value={jamGenerate}
+                        onChange={(e) => setJamGenerate(e.target.value)}
+                      />
+                    </FormControl>
+                  </Stack>
+                  <Flex justifyContent={"flex-end"}>
+                    <Button
+                      onClick={(e) => handleChangeSchedule(e)}
+                      bg={"#238FBA"}
+                      borderRadius={"full"}
+                      color={"white"}
+                      w={"75px"}
+                      h={"40px"}
+                      _hover={{ bg: "cyan.900" }}
+                      _active={{ bg: "#238FBA" }}
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Box>
+              </Suspense>
+            </TabPanel>
+
+            <TabPanel p={0}>
+              <Suspense fallback={<Spinner size="xl" />}>
+                <Box
+                  color={"black"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={"5em"}
+                >
+                  <Stack>
+                    <FormControl>
+                      <FormLabel>Tanggal</FormLabel>
+                      <Input
+                        className="flex border rounded p-1 w-1/2"
+                        type="text"
+                        id="period"
+                        name="period"
+                        value={tanggalSend}
+                        onChange={(e) => setTanggalSend(e.target.value)}
+                      />
+                    </FormControl>
+
+                    <FormControl>
+                      <FormLabel>Jam</FormLabel>
+                      <Input
+                        className="border rounded px-4 focus:border-pink-500 focus:outline-none p-1"
+                        type="time"
+                        value={jamSend}
+                        onChange={(e) => setJamSend(e.target.value)}
+                      />
+                    </FormControl>
+                  </Stack>
+                  <Flex justifyContent={"flex-end"}>
+                    <Button
+                      onClick={(e) => handleChangeSchedule(e)}
+                      bg={"#238FBA"}
+                      borderRadius={"full"}
+                      color={"white"}
+                      w={"75px"}
+                      h={"40px"}
+                      _hover={{ bg: "cyan.900" }}
+                      _active={{ bg: "#238FBA" }}
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Box>
+              </Suspense>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
     </div>
   );
 }

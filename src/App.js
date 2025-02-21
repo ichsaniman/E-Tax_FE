@@ -8,6 +8,7 @@ import Status from "./pages/Status";
 import Scheduler from "./pages/Scheduler";
 import Header from "./components/header";
 import Sidebar from "./components/Sidebar";
+import Log from "./pages/Log";
 
 function App() {
   const routes = [
@@ -15,6 +16,7 @@ function App() {
     { path: "/laporan", component: Report, access: "/" },
     { path: "/status", component: Status, access: "/" },
     { path: "/jadwal", component: Scheduler, access: "/" },
+    { path: "/log", component: Log, access: "/" },
   ];
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 

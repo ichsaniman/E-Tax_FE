@@ -77,68 +77,6 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
       text: "Home",
       access: accessData.access_dashboard,
     },
-    // {
-    //   href: "#",
-    //   icon: HiOutlineClipboardDocumentList,
-    //   text: "Tugas Saya",
-    //   access: accessData.access_tasks || accessData.access_adhoc_tasks,
-    //   subItems: [
-    //     {
-    //       href: "/pending-task",
-    //       icon: FaTasks,
-    //       text: "Tugas Aktif",
-    //       access: accessData.access_tasks,
-    //     },
-    //     {
-    //       href: "/log-history",
-    //       icon: FaBusinessTime,
-    //       text: "Riwayat Tugas",
-    //       access: true,
-    //     },
-    //   ],
-    // },
-    // {
-    //   href: "#",
-    //   icon: FaBriefcase,
-    //   text: "Projek dan Tugas",
-    //   access: accessData.access_tasks || accessData.access_adhoc_tasks,
-    //   subItems: [
-    //     {
-    //       href: "/project",
-    //       icon: RiFileList3Fill,
-    //       text: "Kelola Projek",
-    //       access: accessData.access_project,
-    //     },
-    //     {
-    //       href: "/task-adhoc",
-    //       icon: RiListSettingsLine,
-    //       text: "Kelola Tugas Harian",
-    //       access: accessData.access_adhoc_tasks,
-    //     },
-    //   ],
-    // },
-    // {
-    //   href: "/attendance",
-    //   icon: FaChalkboardUser,
-    //   text: "Report",
-    //   access: accessData.access_attendance,
-    // },
-    // ...(companyId == 19
-    //   ? [
-    //       {
-    //         href: "/management-sales",
-    //         icon: MdManageAccounts,
-    //         text: "Manajemen Sales",
-    //         access: accessData.access_sales_management,
-    //       },
-    //       {
-    //         href: "/reimbursement",
-    //         icon: FaMoneyBillWave,
-    //         text: "Klaim",
-    //         access: true,
-    //       },
-    //     ]
-    //   : []),
     {
       href: "/laporan",
       icon: IoDocuments,
@@ -151,26 +89,16 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
       text: "Status",
       access: accessData.access_manage_user,
     },
-    // {
-    //   href: "/jadwal",
-    //   icon: FaChartBar,
-    //   text: "Scheduler",
-    //   access: accessData.access_performance_karyawan,
-    // },
-    // ...(companyId == 19
-    //   ? [
-    //       {
-    //         href: "/scheduler",
-    //         icon: MdOutlineDateRange,
-    //         text: "Scheduler",
-    //         access: accessData.access_project_report,
-    //       },
-    //     ]
-    //   : []),
     {
       href: "/jadwal",
       icon: FaGear,
       text: "Scheduler",
+      access: accessData.access_settings,
+    },
+    {
+      href: "/log",
+      icon: FaGear,
+      text: "Log",
       access: accessData.access_settings,
     },
   ];

@@ -11,18 +11,18 @@ import {
   Th,
   Td,
   TableContainer,
-  Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { fetchDeliveryStatus } from "../apis/deliveryStatusApi";
 import { useCustomToast } from "../components/Toast";
+import CustomSpinner from "../components/Spinner";
 
 function Status() {
   const [deliveryList, setDeliveryList] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [deliveryStatus, setDeliveryStatus] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const { showSuccessToast, showErrorToast } = useCustomToast();
 
@@ -82,6 +82,7 @@ function Status() {
         mappedStatus[statusParam]
       );
       setDeliveryList(result);
+      setIsLoading(false);
     };
     getDeliveryList();
   }, [searchParams]);
@@ -130,6 +131,7 @@ function Status() {
 
   return (
     <div className="flex flex-col m-5">
+      {isLoading && <CustomSpinner />}
       <h className="text-3xl mb-4 font-bold">Status Pengiriman</h>
       <form
         className="flex my-2 space-x-2 items-center"
@@ -216,10 +218,13 @@ function Status() {
                   <Td>{delivery.cif}</Td>
                   <Td>{delivery.email}</Td>
                   <Td>{delivery.tanggalpembuatan}</Td>
-                  <Td>{delivery.status === "Y" ? (
-                    <p className="text-green-600">Success</p>
-                  ) : (<p className="text-red-600">Failed</p>)
-                  }</Td>
+                  <Td>
+                    {delivery.status === "Y" ? (
+                      <p className="text-green-600">Success</p>
+                    ) : (
+                      <p className="text-red-600">Failed</p>
+                    )}
+                  </Td>
                   <Td>
                     {delivery.status === "Y" ? (
                       <p className="text-green-600">Terkirim</p>

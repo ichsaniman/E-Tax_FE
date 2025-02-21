@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import Select from 'react-select';
+import Select from "react-select";
 import axios from "axios";
 import CustomSpinner from "../components/Spinner";
 import { useCustomToast } from "../components/Toast";
@@ -103,17 +103,16 @@ function Report() {
 
   useEffect(() => {
     const getAllNasabah = async () => {
-      // const cifs = [];
       const result = await fetchAllNasabah();
-      const cifs = result.map(user => ({
+      const cifs = result.map((user) => ({
         value: user.cif,
         label: user.cif,
       }));
-      console.log(cifs)
+      console.log(cifs);
       setUsers(cifs);
-    }
-    getAllNasabah(); 
-  }, [])
+    };
+    getAllNasabah();
+  }, []);
 
   useEffect(() => {
     const getNasabah = async () => {
@@ -170,18 +169,17 @@ function Report() {
           </div>
 
           <div className="flex flex-col">
-          <Text className="font-semibold text-lg">CIF</Text>
-          <div className="">
-            <Select
-              onChange={(selectedOption) => handleSelectCif(selectedOption)}
-              placeholder="Masukkan CIF"
-              isSearchable={true}
-              options={users}
-              isClearable
-            />
+            <Text className="font-semibold text-lg">CIF</Text>
+            <div className="">
+              <Select
+                onChange={(selectedOption) => handleSelectCif(selectedOption)}
+                placeholder="Masukkan CIF"
+                isSearchable={true}
+                options={users}
+                isClearable
+              />
+            </div>
           </div>
-          </div>
-          
         </Box>
         <button className="flex self-end  border rounded py-1 px-2 bg-[#238FBA] hover:bg-[#263043] font-semibold text-white">
           Cari
@@ -192,7 +190,7 @@ function Report() {
         <h1 className="bg-[#238FBA]  border rounded-t-md p-2 text-white font-semibold">
           Detail
         </h1>
-        <div className="grid grid-cols-3 p-2 gap-3 text-sm">
+        <div className="grid grid-cols-3 p-2 gap-3 text-sm mb-4">
           <div className="flex flex-row space-x-2">
             <p className="font-semibold p-1">NPWP</p>
             <input

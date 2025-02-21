@@ -426,7 +426,7 @@ function Header({ OpenSidebar }) {
   return (
     <Box
       style={{
-        padding: "12px 30px 12px 30px",
+        padding: "14px 30px 14px 30px",
         boxShadow: "0 6px 7px -3px rgba(0, 0, 0, 0.35)",
       }}
       display={"flex"}
